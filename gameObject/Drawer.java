@@ -48,7 +48,9 @@ public class Drawer {
 
 	TimerTask task = new TimerTask() {
 		public void run() {
-			aquarium.createAlien();
+//			aquarium.createAlien();
+//			System.out.println("task "+aquarium.getListAlien().getSize());
+
 		}
 	};
 
@@ -63,7 +65,7 @@ public class Drawer {
 		menuState = true;
 		jalan = true;
 		savingFile = false;
-
+ 
 		aquarium = new Aquarium(1080, 720);
 
 		frame = new JFrame("arkavquarium");
@@ -85,6 +87,7 @@ public class Drawer {
 						aquarium.createGuppy();
 						aquarium.createAlien();
 						timer.schedule(task, delay, period);
+						System.out.println("mousePressed "+aquarium.getListAlien().getSize());
 
 					}
 					if ((e.getX() >= 600 && e.getX() <= 965) && (e.getY() >= 212 && e.getY() <= 283)) {
@@ -178,9 +181,7 @@ public class Drawer {
 							money -= GUPPY_PRICE;
 							aquarium.setMoney(money);
 							aquarium.createGuppy();
-//							System.out.println(aquarium.getListAlien().getSize());
 						}
-
 					} else if (e.getKeyChar() == 'p') {
 						if (money >= PIRANHA_PRICE) {
 							money -= PIRANHA_PRICE;
@@ -365,7 +366,6 @@ public class Drawer {
 							drawPiranha(aquarium.getListPiranha().get(i), g);
 						}
 					}
-
 					if (!aquarium.getListAlien().isEmpty()) {
 						for (int i = 0; i < aquarium.getListAlien().getSize(); i++) {
 							drawAlien(aquarium.getListAlien().get(i), g);

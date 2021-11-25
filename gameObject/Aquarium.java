@@ -99,9 +99,6 @@ public class Aquarium implements Serializable {
 		return listAlien;
 	}
 
-	public void setListAlien(LinkedList<Alien> listAlien) {
-		this.listAlien = listAlien;
-	}
 
 	/**
 	 * run the living in aquarium.
@@ -125,7 +122,8 @@ public class Aquarium implements Serializable {
 		int y = rand.nextInt((int) maxLocation.getY() - 250 + 1) + 150;
 		Guppy guppy = new Guppy(getCurrentTime(), x, y);
 		listGuppy.add(guppy);
-		System.out.println("Create Guppy");
+//		System.out.println("Create Guppy");
+		System.out.println("구피 "+listGuppy.getSize());
 	}
 
 	/**
@@ -149,7 +147,8 @@ public class Aquarium implements Serializable {
 		Alien alien = new Alien(getCurrentTime(), x, y);
 		listAlien.add(alien);
 		System.out.println("에일리언 등쟝");
-		System.out.println(listAlien.getSize());
+		System.out.println("createAlien "+listAlien.getSize());
+		System.out.println(alien);
 	}
 
 	public void createFood(Point p) {

@@ -9,7 +9,7 @@ public class Piranha extends Fish {
 
 	  public Piranha(double time, double x, double y) {
 	    super(time, x, y);
-	    setSpeed(getSpeed() + 0.000005);
+	    setSpeed(getSpeed() + 0.000006);
 	    price = PIRANHA_PRICE;
 	  }
 
