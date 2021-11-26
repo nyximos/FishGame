@@ -1,6 +1,7 @@
 package gameObject;
 
 import static gameObject.Constants.COIN_RADIUS;
+import static gameObject.Constants.ALIEN_RADIUS;
 import static gameObject.Constants.EGG_PRICE;
 import static gameObject.Constants.FISH_CHANGE_DIR_INTERVAL;
 import static gameObject.Constants.FISH_HUNGRY_CONSTRAINT;
@@ -48,15 +49,14 @@ public class Drawer {
 
 	TimerTask task = new TimerTask() {
 		public void run() {
-//			aquarium.createAlien();
-//			System.out.println("task "+aquarium.getListAlien().getSize());
-
+			aquarium.createAlien();
 		}
 	};
 
-	Timer timer = new Timer();
-	long delay = 3000;
-	long period = 1000;
+	Timer alienTimer = new Timer();
+	long alienDelay = 3000;
+	long alienPeriod = 27000;
+	
 
 	/**
 	 * Constructor Drawer.
@@ -68,7 +68,7 @@ public class Drawer {
  
 		aquarium = new Aquarium(1080, 720);
 
-		frame = new JFrame("arkavquarium");
+		frame = new JFrame("¹°°í±âÅ°¿ì±â");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		drawPanel = new DrawPanel();
@@ -83,11 +83,11 @@ public class Drawer {
 			public void mousePressed(MouseEvent e) {
 				if (menuState) {
 					if ((e.getX() >= 600 && e.getX() <= 965) && (e.getY() >= 70 && e.getY() <= 170)) {
+						String name = JOptionPane.showInputDialog("Please input name: ");
 						menuState = false;
+						System.out.println(name);
 						aquarium.createGuppy();
-						aquarium.createAlien();
-						timer.schedule(task, delay, period);
-						System.out.println("mousePressed "+aquarium.getListAlien().getSize());
+						alienTimer.schedule(task, alienDelay, alienPeriod);
 
 					}
 					if ((e.getX() >= 600 && e.getX() <= 965) && (e.getY() >= 212 && e.getY() <= 283)) {
@@ -96,10 +96,28 @@ public class Drawer {
 						menuState = false;
 					}
 				} else {
-
 					int money = aquarium.getMoney();
 					Point pNow = new Point(e.getX(), e.getY());
 					Point closestCoin = aquarium.getClosestCoin(pNow);
+
+					Point closestAlien = aquarium.getClosestAlien(pNow);
+					if (pNow.findDistance(closestAlien) <= ALIEN_RADIUS && aquarium.getListAlien().getSize() > 0) {
+						for (int i = 1; i <= aquarium.getListAlien().getSize(); i++)
+							if (aquarium.getListAlien().get(i).equals(closestAlien)) {
+								System.out.println("¶§Âî"+aquarium.getListAlien().get(i).getClick());
+								aquarium.getListAlien().get(i).plusClick();
+
+								if (aquarium.getListAlien().get(i)
+										.AlienisTimeToDie(aquarium.getListAlien().get(i).getClick())) {
+									aquarium.getListAlien().remove(aquarium.getListAlien().get(i));
+									// ¿¡ÀÏ¸®¾ðÁê±Ý
+									aquarium.createCoin(pNow,13);
+									break;
+								}
+							}
+
+					}
+
 					if (pNow.findDistance(closestCoin) <= COIN_RADIUS && aquarium.getListCoin().getSize() > 0) {
 						for (int i = 1; i <= aquarium.getListCoin().getSize(); i++)
 							if (aquarium.getListCoin().get(i).equals(closestCoin)) {
@@ -115,31 +133,15 @@ public class Drawer {
 					} else {
 						if (e.getY() > 140 && e.getX() < 1030) {
 
+							if(aquarium.getListAlien().getSize()==0) {
 							if (money >= FOOD_PRICE) {
 								money -= FOOD_PRICE;
 								aquarium.setMoney(money);
 								aquarium.createFood(new Point(e.getX(), 150));
+								}
 							}
 						}
 
-						Point closestAlien = aquarium.getClosestAlien(pNow);
-						if (pNow.findDistance(closestAlien) <= COIN_RADIUS && aquarium.getListAlien().getSize() > 0) {
-							for (int i = 1; i <= aquarium.getListAlien().getSize(); i++)
-								if (aquarium.getListAlien().get(i).equals(closestAlien)) {
-									System.out.println("¶§Âî");
-									aquarium.getListAlien().get(i).plusClick();
-
-//			                 Coin coin = aquarium.getListCoin().get(i);
-									if (aquarium.getListAlien().get(i)
-											.AlienisTimeToDie(aquarium.getListAlien().get(i).getClick())) {
-
-										aquarium.getListAlien().remove(aquarium.getListAlien().get(i));
-										aquarium.setMoney(money + 200);
-										break;
-									}
-								}
-
-						}
 
 						if ((e.getY() >= 37 && e.getY() <= 69) && (e.getX() >= 931 && e.getX() <= 1041)) {
 							savingFile = true;
@@ -148,7 +150,6 @@ public class Drawer {
 					}
 
 				}
-				// System.out.println(e.getX() + " " + e.getY());
 			}
 
 			@Override
@@ -307,22 +308,22 @@ public class Drawer {
 		}
 
 		public void loadBackground() {
-			ImageIcon temp = new ImageIcon("assets/img/aquarium.png");
+			ImageIcon temp = new ImageIcon("assets/img/aquarium2.png");
 			backgroundImage = temp.getImage();
 		}
 
 		public void loadMenu() {
-			ImageIcon temp = new ImageIcon("assets/img/mainmenu.jpg");
+			ImageIcon temp = new ImageIcon("assets/img/mainmenu2.png");
 			mainMenu = temp.getImage();
 		}
 
 		public void loadWin() {
-			ImageIcon temp = new ImageIcon("assets/img/win.png");
+			ImageIcon temp = new ImageIcon("assets/img/win3.png");
 			winImage = temp.getImage();
 		}
 
 		public void loadLose() {
-			ImageIcon temp = new ImageIcon("assets/img/lose.png");
+			ImageIcon temp = new ImageIcon("assets/img/lose2.png");
 			loseImage = temp.getImage();
 		}
 

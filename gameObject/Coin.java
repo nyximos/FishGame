@@ -12,7 +12,7 @@ public class Coin extends Item {
 		baseVal = COIN_BASE_VALUE;
 		value = 0;
 	}
-
+	
 	public Coin(Point p, int level) {
 		super(p.getX(), p.getY());
 		baseVal = COIN_BASE_VALUE;

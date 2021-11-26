@@ -21,6 +21,8 @@ public class Guppy extends Fish {
    */
   public Guppy(double time, double x, double y) {
     super(time, x, y);
+    
+    int hungry;
 
     growthStep = 1;
     foodCount = 0;

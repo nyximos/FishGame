@@ -4,6 +4,8 @@ import static gameObject.Constants.GUPPY_PRICE;
 
 import java.io.Serializable;
 import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class Aquarium implements Serializable {
 
@@ -98,6 +100,7 @@ public class Aquarium implements Serializable {
 	public LinkedList<Alien> getListAlien() {
 		return listAlien;
 	}
+	
 
 
 	/**
@@ -122,8 +125,7 @@ public class Aquarium implements Serializable {
 		int y = rand.nextInt((int) maxLocation.getY() - 250 + 1) + 150;
 		Guppy guppy = new Guppy(getCurrentTime(), x, y);
 		listGuppy.add(guppy);
-//		System.out.println("Create Guppy");
-		System.out.println("구피 "+listGuppy.getSize());
+		
 	}
 
 	/**
@@ -136,7 +138,6 @@ public class Aquarium implements Serializable {
 		int y = rand.nextInt((int) maxLocation.getY() - 250 + 1) + 150;
 		Piranha piranha = new Piranha(getCurrentTime(), x, y);
 		listPiranha.add(piranha);
-		System.out.println("Create Piranha");
 	}
 	
 	public void createAlien() {
@@ -146,9 +147,7 @@ public class Aquarium implements Serializable {
 		int y = rand.nextInt((int) maxLocation.getY() - 250 + 1) + 150;
 		Alien alien = new Alien(getCurrentTime(), x, y);
 		listAlien.add(alien);
-		System.out.println("에일리언 등쟝");
-		System.out.println("createAlien "+listAlien.getSize());
-		System.out.println(alien);
+		System.out.println("에일리언이 나타났다!");
 	}
 
 	public void createFood(Point p) {
@@ -167,6 +166,7 @@ public class Aquarium implements Serializable {
 		Coin coin = new Coin(p, level);
 		listCoin.add(coin);
 	}
+	
 
 	/**
 	 * get closest food from coordinate p.
@@ -251,9 +251,11 @@ public class Aquarium implements Serializable {
 
 		for (int i = 0; i < listAlien.getSize(); i++) {
 			if (listAlien.get(i).AlienisTimeToDie(listAlien.get(i).getClick())) {
+				Coin coin = new Coin(closest, 7);
+				listCoin.add(coin);
 				listAlien.remove(listAlien.get(i));
 			} else {
-				if (!listGuppy.isEmpty() && !listPiranha.isEmpty()) {
+				if (!listGuppy.isEmpty() && !listAlien.isEmpty()) {
 					Bool eat = new Bool();
 					int guppyGrowth = 0;
 
@@ -273,9 +275,6 @@ public class Aquarium implements Serializable {
 
 							if (eat.getValue()) {
 								System.out.println("구피냠냠");
-								guppyGrowth++;
-								Coin coin = new Coin(closest, guppyGrowth);
-								listCoin.add(coin);
 							}
 							break;
 						}

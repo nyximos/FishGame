@@ -16,5 +16,7 @@ public final class Constants implements Serializable {
 	  public static final int GUPPY_FOOD_THRESHOLD = 3;
 	  public static final double GUPPY_COIN_INTERVAL = 5;
 	  public static final int PIRANHA_PRICE = 100;
+	  public static final double ALIEN_RADIUS = 80.0;
+
 
 }

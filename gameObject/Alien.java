@@ -3,10 +3,9 @@ package gameObject;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class Alien extends Fish{
+public class Alien extends Fish {
 
 	public int click;
-	
 
 	public int getClick() {
 		return click;
@@ -15,93 +14,90 @@ public class Alien extends Fish{
 	public void setClick(int click) {
 		this.click = click;
 	}
-	
+
 	public void plusClick() {
 		this.click++;
 	}
 
 	public Alien(double time, double x, double y) {
 		super(time, x, y);
-	    setSpeed(getSpeed() + 0.000006);
+		setSpeed(getSpeed() + 0.000007);
 
 	}
 
-	  public void moveToEat(LinkedList<Guppy> listguppy, Guppy guppy, double time, Bool eat) {
-	    if (guppy.findDistance(new Point(getX(), getY())) <= speed) {
-	      setX(guppy.getX());
-	      setY(guppy.getY());
-	      lastEaten = time;
-	      listguppy.remove(guppy);
-	      eat.setValue(true);
-	    } else {
-	      double rad = Math.atan2((guppy.getY() - getY()), (guppy.getX() - getX()));
-	      double moveX = speed * Math.cos(rad);
-	      double moveY = speed * Math.sin(rad);
+	@Override
+	public void moveRandom(double time, Point max) {
+		double moveX;
+		double moveY;
+		double newRad;
 
-	      setX(getX() + moveX);
-	      setY(getY() + moveY);
-	      lastChangeDir = time;
-	      directionRad = rad;
-	      if (moveX > 0) {
-	        direction = 1;
-	      } else {
-	        direction = 0;
-	      }
-	    }
-	  }
-	  
+		if (isTimeToChangeDirection(time)) {
+			newRad = createDirection(getX(), getY(), max);
+			setDirectionRad(newRad);
 
+			lastChangeDir = time;
+			moveX = speed * Math.cos(newRad);
+			moveY = speed * Math.sin(newRad);
+			if (moveX > 0) {
+				setDirection(1);
+			} else {
+				setDirection(0);
+			}
 
-	  @Override
-	  public void moveRandom(double time, Point max) {
-	    double moveX;
-	    double moveY;
-	    double newRad;
+		} else {
+			moveX = speed * Math.cos(directionRad);
+			moveY = speed * Math.sin(directionRad);
+			if (!isInsideAquarium((getX() + moveX), (getY() + moveY), max)) {
+				newRad = createDirection(getX(), getY(), max);
+				setDirectionRad(newRad);
 
-	    if (isTimeToChangeDirection(time)) {
-	      newRad = createDirection(getX(), getY(), max);
-	      setDirectionRad(newRad);
+				lastChangeDir = time;
+				moveX = speed * Math.cos(newRad);
+				moveY = speed * Math.sin(newRad);
+				if (moveX > 0) {
+					setDirection(1);
+				} else {
+					setDirection(0);
+				}
+			}
+		}
 
-	      lastChangeDir = time;
-	      moveX = speed * Math.cos(newRad);
-	      moveY = speed * Math.sin(newRad);
-	      if (moveX > 0) {
-	        setDirection(1);
-	      } else {
-	        setDirection(0);
-	      }
+		setX(getX() + moveX);
+		setY(getY() + moveY);
+	}
 
-	    } else {
-	      moveX = speed * Math.cos(directionRad);
-	      moveY = speed * Math.sin(directionRad);
-	      if (!isInsideAquarium((getX() + moveX), (getY() + moveY), max)) {
-	        newRad = createDirection(getX(), getY(), max);
-	        setDirectionRad(newRad);
+	public void moveToEat(LinkedList<Guppy> listguppy, Guppy guppy, double time, Bool eat) {
+		if (guppy.findDistance(new Point(getX(), getY())) <= speed) {
+			setX(guppy.getX());
+			setY(guppy.getY());
+			lastEaten = time;
+			listguppy.remove(guppy);
+			eat.setValue(true);
+		} else {
+			double rad = Math.atan2((guppy.getY() - getY()), (guppy.getX() - getX()));
+			double moveX = speed * Math.cos(rad);
+			double moveY = speed * Math.sin(rad);
 
-	        lastChangeDir = time;
-	        moveX = speed * Math.cos(newRad);
-	        moveY = speed * Math.sin(newRad);
-	        if (moveX > 0) {
-	          setDirection(1);
-	        } else {
-	          setDirection(0);
-	        }
-	      }
-	    }
-
-	    setX(getX() + moveX);
-	    setY(getY() + moveY);
-	  }
-
+			setX(getX() + moveX);
+			setY(getY() + moveY);
+			lastChangeDir = time;
+			directionRad = rad;
+			if (moveX > 0) {
+				direction = 1;
+			} else {
+				direction = 0;
+			}
+		}
+	}
 
 	public boolean AlienisTimeToDie(int click) {
-		if(this.click >=  30) {
+		if (this.click >= 20) {
 			System.out.println("½ÇÇà");
-		return true;
+			return true;
 		} else {
 			return false;
 		}
-		
+
 	}
-	
-	}
+
+}
