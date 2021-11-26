@@ -46,8 +46,22 @@ public class Drawer {
 
 	protected boolean jalan;
 	protected boolean savingFile;
+	
+	protected long score;
+	
+	
+	TimerTask scoreTask = new TimerTask() {
+		public void run() {
+			score++;
+		}
+	};
+	
+	Timer scoreTimer = new Timer();
+	long scoreDelay = 100;
+	long scorePeriod = 100;
+	
 
-	TimerTask task = new TimerTask() {
+	TimerTask alienTask = new TimerTask() {
 		public void run() {
 			aquarium.createAlien();
 		}
@@ -86,8 +100,9 @@ public class Drawer {
 						String name = JOptionPane.showInputDialog("Please input name: ");
 						menuState = false;
 						System.out.println(name);
+						scoreTimer.schedule(scoreTask, scoreDelay, scorePeriod);
 						aquarium.createGuppy();
-						alienTimer.schedule(task, alienDelay, alienPeriod);
+						alienTimer.schedule(alienTask, alienDelay, alienPeriod);
 
 					}
 					if ((e.getX() >= 600 && e.getX() <= 965) && (e.getY() >= 212 && e.getY() <= 283)) {
@@ -110,8 +125,7 @@ public class Drawer {
 								if (aquarium.getListAlien().get(i)
 										.AlienisTimeToDie(aquarium.getListAlien().get(i).getClick())) {
 									aquarium.getListAlien().remove(aquarium.getListAlien().get(i));
-									// 에일리언쥬금
-									aquarium.createCoin(pNow,13);
+									aquarium.createCoin(pNow,5);
 									break;
 								}
 							}

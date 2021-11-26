@@ -22,7 +22,9 @@ public class Aquarium implements Serializable {
 	private int piranhaPeriod;
 	private int foodPeriod;
 	private long startTime;
-
+	
+	public static int on = 0;
+	
 	/**
 	 * constructor aquarium with parameter.
 	 * 
@@ -100,6 +102,7 @@ public class Aquarium implements Serializable {
 	public LinkedList<Alien> getListAlien() {
 		return listAlien;
 	}
+
 	
 
 
@@ -279,6 +282,10 @@ public class Aquarium implements Serializable {
 							break;
 						}
 					}
+					
+					if (listGuppy.isEmpty()) {
+						on = 1;
+					}
 					 
 				} else {
 					listAlien.get(i).moveRandom(getCurrentTime(), maxLocation);
@@ -419,11 +426,12 @@ public class Aquarium implements Serializable {
 	public int getStateGame() {
 		if (egg == 3) {
 			return 2;
-		} else if ((money < GUPPY_PRICE) && listGuppy.isEmpty() && listCoin.isEmpty()) {
-			return 1;
+		} else if ( on == 1 && listGuppy.isEmpty() && listCoin.isEmpty()) {
+				return 1;				
 		} else {
 			return 0;
 		}
 	}
+
 
 }
