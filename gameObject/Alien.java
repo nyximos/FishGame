@@ -92,7 +92,7 @@ public class Alien extends Fish {
 
 	public boolean AlienisTimeToDie(int click) {
 		if (this.click >= 20) {
-			System.out.println("실행");
+			System.out.println("에일리언을 퇴치했다!");
 			return true;
 		} else {
 			return false;

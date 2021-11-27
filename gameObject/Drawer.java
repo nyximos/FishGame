@@ -20,11 +20,6 @@ import java.awt.event.MouseListener;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -47,19 +42,14 @@ public class Drawer {
 	protected boolean jalan;
 	protected boolean savingFile;
 	
-	protected long score;
-	
-	
-	TimerTask scoreTask = new TimerTask() {
-		public void run() {
-			score++;
-		}
-	};
-	
-	Timer scoreTimer = new Timer();
-	long scoreDelay = 100;
-	long scorePeriod = 100;
-	
+	public static long score;
+	public static long finalScore;
+
+
+
+	public static String name;
+	public static int on = 0;
+
 
 	TimerTask alienTask = new TimerTask() {
 		public void run() {
@@ -97,10 +87,9 @@ public class Drawer {
 			public void mousePressed(MouseEvent e) {
 				if (menuState) {
 					if ((e.getX() >= 600 && e.getX() <= 965) && (e.getY() >= 70 && e.getY() <= 170)) {
-						String name = JOptionPane.showInputDialog("Please input name: ");
+						name = JOptionPane.showInputDialog("Please input name: ");
 						menuState = false;
-						System.out.println(name);
-						scoreTimer.schedule(scoreTask, scoreDelay, scorePeriod);
+						System.out.println(name+"님이 게임을 시작했습니다.");
 						aquarium.createGuppy();
 						alienTimer.schedule(alienTask, alienDelay, alienPeriod);
 
@@ -135,7 +124,7 @@ public class Drawer {
 					if (pNow.findDistance(closestCoin) <= COIN_RADIUS && aquarium.getListCoin().getSize() > 0) {
 						for (int i = 1; i <= aquarium.getListCoin().getSize(); i++)
 							if (aquarium.getListCoin().get(i).equals(closestCoin)) {
-								System.out.println("동전줍기");
+								System.out.println("줍줍");
 								int val = aquarium.getGarry().takeCoin(aquarium.getListCoin(),
 										aquarium.getListCoin().get(i));
 
@@ -332,13 +321,15 @@ public class Drawer {
 		}
 
 		public void loadWin() {
-			ImageIcon temp = new ImageIcon("assets/img/win3.png");
+			ImageIcon temp = new ImageIcon("assets/img/win2.png");
 			winImage = temp.getImage();
 		}
 
 		public void loadLose() {
 			ImageIcon temp = new ImageIcon("assets/img/lose2.png");
 			loseImage = temp.getImage();
+
+
 		}
 
 		public void paintComponent(Graphics g) {
@@ -355,7 +346,7 @@ public class Drawer {
 			if (state == 2) {
 				g.drawImage(winImage, 0, 0, this);
 			} else if (state == 1) {
-				g.drawImage(loseImage, 0, 0, this);
+				g.drawImage(loseImage, 0, 0, this);			
 			} else {
 				if (menuState) {
 					g.drawImage(mainMenu, 0, 0, this);
