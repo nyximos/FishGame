@@ -1,13 +1,11 @@
 package gameObject;
 
 import static gameObject.Constants.GUPPY_PRICE;
-import static gameObject.Drawer.name;
-import static gameObject.Drawer.score;
-import static gameObject.Drawer.on;
 
 import java.io.Serializable;
 import java.util.Random;
-
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class Aquarium implements Serializable {
 
@@ -24,7 +22,9 @@ public class Aquarium implements Serializable {
 	private int piranhaPeriod;
 	private int foodPeriod;
 	private long startTime;
-
+	
+	public static int on = 0;
+	
 	/**
 	 * constructor aquarium with parameter.
 	 * 
@@ -103,6 +103,9 @@ public class Aquarium implements Serializable {
 		return listAlien;
 	}
 
+	
+
+
 	/**
 	 * run the living in aquarium.
 	 */
@@ -125,7 +128,7 @@ public class Aquarium implements Serializable {
 		int y = rand.nextInt((int) maxLocation.getY() - 250 + 1) + 150;
 		Guppy guppy = new Guppy(getCurrentTime(), x, y);
 		listGuppy.add(guppy);
-
+		
 	}
 
 	/**
@@ -139,9 +142,9 @@ public class Aquarium implements Serializable {
 		Piranha piranha = new Piranha(getCurrentTime(), x, y);
 		listPiranha.add(piranha);
 	}
-
+	
 	public void createAlien() {
-
+                       
 		Random rand = new Random();
 		int x = rand.nextInt((int) maxLocation.getX() - 150 + 1) + 75;
 		int y = rand.nextInt((int) maxLocation.getY() - 250 + 1) + 150;
@@ -166,6 +169,7 @@ public class Aquarium implements Serializable {
 		Coin coin = new Coin(p, level);
 		listCoin.add(coin);
 	}
+	
 
 	/**
 	 * get closest food from coordinate p.
@@ -274,14 +278,15 @@ public class Aquarium implements Serializable {
 
 							if (eat.getValue()) {
 								System.out.println("±¸ÇÇ³È³È");
-								if (listGuppy.isEmpty()) {
-									on = 1;
-								}
 							}
 							break;
 						}
 					}
-
+					
+					if (listGuppy.isEmpty()) {
+						on = 1;
+					}
+					 
 				} else {
 					listAlien.get(i).moveRandom(getCurrentTime(), maxLocation);
 				}
@@ -421,11 +426,12 @@ public class Aquarium implements Serializable {
 	public int getStateGame() {
 		if (egg == 3) {
 			return 2;
-		} else if (on == 1 && listGuppy.isEmpty()) {
-			return 1;
+		} else if ( on == 1 && listGuppy.isEmpty() && listCoin.isEmpty()) {
+				return 1;				
 		} else {
 			return 0;
 		}
 	}
+
 
 }
