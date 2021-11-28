@@ -1,11 +1,10 @@
 package gameObject;
 
-import static gameObject.Constants.GUPPY_PRICE;
+
 
 import java.io.Serializable;
 import java.util.Random;
-import java.util.Timer;
-import java.util.TimerTask;
+
 
 public class Aquarium implements Serializable {
 
@@ -425,6 +424,7 @@ public class Aquarium implements Serializable {
 	 */
 	public int getStateGame() {
 		if (egg == 3) {
+			
 			return 2;
 		} else if ( on == 1 && listGuppy.isEmpty() && listCoin.isEmpty()) {
 				return 1;				

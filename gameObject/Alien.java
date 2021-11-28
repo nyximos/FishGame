@@ -1,7 +1,5 @@
 package gameObject;
 
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class Alien extends Fish {
 

@@ -3,8 +3,6 @@ package gameObject;
 import static gameObject.Constants.COIN_RADIUS;
 import static gameObject.Constants.ALIEN_RADIUS;
 import static gameObject.Constants.EGG_PRICE;
-import static gameObject.Constants.FISH_CHANGE_DIR_INTERVAL;
-import static gameObject.Constants.FISH_HUNGRY_CONSTRAINT;
 import static gameObject.Constants.FOOD_PRICE;
 import static gameObject.Constants.GUPPY_PRICE;
 import static gameObject.Constants.PIRANHA_PRICE;
@@ -20,16 +18,10 @@ import java.awt.event.MouseListener;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import javax.swing.ImageIcon;
-import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -46,20 +38,36 @@ public class Drawer {
 
 	protected boolean jalan;
 	protected boolean savingFile;
-	
-	protected long score;
-	
-	
+
+	public long getScore() {
+		return score;
+	}
+
+	public void setScore(long score) {
+		this.score = score;
+	}
+
+	public long getFinalScore() {
+		return finalScore;
+	}
+
+	public void setFinalScore(long finalScore) {
+		this.finalScore = finalScore;
+	}
+
+	public long score;
+	public long finalScore = 0;
+	public String name;
+
 	TimerTask scoreTask = new TimerTask() {
 		public void run() {
 			score++;
 		}
 	};
-	
+
 	Timer scoreTimer = new Timer();
 	long scoreDelay = 100;
 	long scorePeriod = 100;
-	
 
 	TimerTask alienTask = new TimerTask() {
 		public void run() {
@@ -71,6 +79,7 @@ public class Drawer {
 	long alienDelay = 3000;
 	long alienPeriod = 27000;
 	
+//	public Score sc = null;x
 
 	/**
 	 * Constructor Drawer.
@@ -79,7 +88,7 @@ public class Drawer {
 		menuState = true;
 		jalan = true;
 		savingFile = false;
- 
+
 		aquarium = new Aquarium(1080, 720);
 
 		frame = new JFrame("물고기키우기");
@@ -97,7 +106,7 @@ public class Drawer {
 			public void mousePressed(MouseEvent e) {
 				if (menuState) {
 					if ((e.getX() >= 600 && e.getX() <= 965) && (e.getY() >= 70 && e.getY() <= 170)) {
-						String name = JOptionPane.showInputDialog("Please input name: ");
+						name = JOptionPane.showInputDialog("Please input name: ");
 						menuState = false;
 						System.out.println(name);
 						scoreTimer.schedule(scoreTask, scoreDelay, scorePeriod);
@@ -119,13 +128,13 @@ public class Drawer {
 					if (pNow.findDistance(closestAlien) <= ALIEN_RADIUS && aquarium.getListAlien().getSize() > 0) {
 						for (int i = 1; i <= aquarium.getListAlien().getSize(); i++)
 							if (aquarium.getListAlien().get(i).equals(closestAlien)) {
-								System.out.println("때찌"+aquarium.getListAlien().get(i).getClick());
+								System.out.println("때찌" + aquarium.getListAlien().get(i).getClick());
 								aquarium.getListAlien().get(i).plusClick();
 
 								if (aquarium.getListAlien().get(i)
 										.AlienisTimeToDie(aquarium.getListAlien().get(i).getClick())) {
 									aquarium.getListAlien().remove(aquarium.getListAlien().get(i));
-									aquarium.createCoin(pNow,5);
+									aquarium.createCoin(pNow, 5);
 									break;
 								}
 							}
@@ -147,15 +156,14 @@ public class Drawer {
 					} else {
 						if (e.getY() > 140 && e.getX() < 1030) {
 
-							if(aquarium.getListAlien().getSize()==0) {
-							if (money >= FOOD_PRICE) {
-								money -= FOOD_PRICE;
-								aquarium.setMoney(money);
-								aquarium.createFood(new Point(e.getX(), 150));
+							if (aquarium.getListAlien().getSize() == 0) {
+								if (money >= FOOD_PRICE) {
+									money -= FOOD_PRICE;
+									aquarium.setMoney(money);
+									aquarium.createFood(new Point(e.getX(), 150));
 								}
 							}
 						}
-
 
 						if ((e.getY() >= 37 && e.getY() <= 69) && (e.getX() >= 931 && e.getX() <= 1041)) {
 							savingFile = true;
@@ -214,19 +222,33 @@ public class Drawer {
 						}
 
 					} else if (e.getKeyChar() == 'x') {
-						JDialog.setDefaultLookAndFeelDecorated(true);
-						int response = JOptionPane.showConfirmDialog(null, "Do you want to exit?", "Exit",
-								JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-						if (response == JOptionPane.NO_OPTION) {
-							// dummy line
-						} else if (response == JOptionPane.YES_OPTION) {
-							jalan = false;
-						} else if (response == JOptionPane.CLOSED_OPTION) {
-							// dummy line
+						jalan = false;
+						finalScore=0;
+						alienTask.cancel();
+						alienTimer.cancel();
+						
+						if(aquarium.getEgg()==3) {
+							finalScore=10000000;
+							finalScore -= score;
+							System.out.println(name + "님의 점수는 " + finalScore + "입니다.");
+							
+//							sc = new Score(name,finalScore);
+
 						}
+//						JDialog.setDefaultLookAndFeelDecorated(true);
+//						int response = JOptionPane.showConfirmDialog(null, "Do you want to exit?", "Exit",
+//								JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+//						if (response == JOptionPane.NO_OPTION) {
+//							// dummy line
+////							menuState=true;
+//						} else if (response == JOptionPane.YES_OPTION) {
+//							jalan = false;
+//						} else if (response == JOptionPane.CLOSED_OPTION) {
+//							// dummy line
+//						}
 					} else if (e.getKeyChar() == 'q') {
 						aquarium.setMoney(9999999);
-					}
+					} 
 				}
 			}
 
@@ -258,9 +280,14 @@ public class Drawer {
 //				saveGame(saveFilename);
 				savingFile = false;
 			}
+//			System.out.println("while문 : " + score);
 		}
 		// Exit window
 		frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
+		frame.setVisible(false);
+		
+//		System.exit(0);
+
 	}
 
 	public double getTime() {
@@ -280,7 +307,7 @@ public class Drawer {
 			return 3;
 		} else if (temp >= 0.6 && temp < 0.75) {
 			return 4;
-		} else if (temp >= 0.75 && temp < 0.9) {
+		} else if (temp >= 0.75 && temp < 0.9) { 
 			return 5;
 		} else if (temp >= 0.9 && temp < 1.05) {
 			return 6;
@@ -299,6 +326,7 @@ public class Drawer {
 		private Image winImage;
 		private Image loseImage;
 		private Font font;
+		private int game;
 
 		public DrawPanel() {
 			super();
@@ -332,7 +360,7 @@ public class Drawer {
 		}
 
 		public void loadWin() {
-			ImageIcon temp = new ImageIcon("assets/img/win3.png");
+			ImageIcon temp = new ImageIcon("assets/img/win2.png");
 			winImage = temp.getImage();
 		}
 
@@ -353,6 +381,7 @@ public class Drawer {
 
 			int state = aquarium.getStateGame();
 			if (state == 2) {
+				scoreTimer.cancel();
 				g.drawImage(winImage, 0, 0, this);
 			} else if (state == 1) {
 				g.drawImage(loseImage, 0, 0, this);
@@ -523,8 +552,5 @@ public class Drawer {
 		}
 
 	}
-
-
-
 
 }
