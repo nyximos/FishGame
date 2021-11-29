@@ -79,7 +79,7 @@ public class Drawer {
 	long alienDelay = 3000;
 	long alienPeriod = 27000;
 	
-//	public Score sc = null;x
+	public Score sc = null;
 
 	/**
 	 * Constructor Drawer.
@@ -226,15 +226,15 @@ public class Drawer {
 						finalScore=0;
 						alienTask.cancel();
 						alienTimer.cancel();
-						
+						sc = new Score(name,finalScore);
 						if(aquarium.getEgg()==3) {
 							finalScore=10000000;
 							finalScore -= score;
 							System.out.println(name + "님의 점수는 " + finalScore + "입니다.");
-							
-//							sc = new Score(name,finalScore);
-
+							sc.insert(name, finalScore);
 						}
+						sc.select();
+						sc.setVisible(true);
 //						JDialog.setDefaultLookAndFeelDecorated(true);
 //						int response = JOptionPane.showConfirmDialog(null, "Do you want to exit?", "Exit",
 //								JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
@@ -265,6 +265,7 @@ public class Drawer {
 
 		frame.setResizable(false);
 		frame.setSize(1080, 720);
+		frame.setLocationRelativeTo(null);
 		frame.setLocationByPlatform(true);
 		frame.setVisible(true);
 
@@ -283,7 +284,7 @@ public class Drawer {
 //			System.out.println("while문 : " + score);
 		}
 		// Exit window
-		frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
+//		frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
 		frame.setVisible(false);
 		
 //		System.exit(0);
