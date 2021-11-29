@@ -27,13 +27,32 @@ public class Score extends JFrame {
 
 	// 공용
 	static int pk = 1;
+	
+	public Score() {
+		this.setTitle("점수판");
+		this.setSize(800, 720);
+
+		this.setLayout(null);
+		// 화면중앙
+		this.setLocationRelativeTo(null);
+//		Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
+//		this.setLocation(size.width / 2 - getSize().width / 2, size.height / 2 - getSize().height / 2);
+
+		// 설정
+		for (int i = 0; i < z; i++) {
+			spots[i] = currentY;
+			currentY += 50;
+		}
+		makeConnection();
+	}
 
 	
 
 	public Score(String name, double score) {
 		this.setTitle("점수판");
-		this.setSize(1080, 720);
+		this.setSize(800, 720);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+
 		this.setLayout(null);
 		// 화면중앙
 		this.setLocationRelativeTo(null);
@@ -111,12 +130,11 @@ public class Score extends JFrame {
 			while (rs.next()) {
 				String name = rs.getString("name");
 				int score = rs.getInt("score");
-				Font font= new Font("Jalnan", Font.PLAIN, 30);
 // 			  이 프레임에 라벨로 넣어줘야함
 //            srr[i] = "#"+(i+1)+name+score;
 				jl[i] = new JLabel((i+1)+ "등   " + name + "       " + score+"점");
-				jl[i].setBounds(350, spots[i]+50, 600, 100);
-	            jl[i].setFont(font);
+				jl[i].setBounds(200, spots[i]+50, 600, 100);
+	            jl[i].setFont(new Font("Jalnan", Font.BOLD, 30));
 				this.add(jl[i]);
 				i++;
 				System.out.println(name + score);

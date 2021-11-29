@@ -66,8 +66,8 @@ public class Drawer {
 	};
 
 	Timer scoreTimer = new Timer();
-	long scoreDelay = 100;
-	long scorePeriod = 100;
+	long scoreDelay = 1;
+	long scorePeriod = 1;
 
 	TimerTask alienTask = new TimerTask() {
 		public void run() {
@@ -76,7 +76,7 @@ public class Drawer {
 	};
 
 	Timer alienTimer = new Timer();
-	long alienDelay = 3000;
+	long alienDelay = 18000;
 	long alienPeriod = 27000;
 	
 	public Score sc = null;
@@ -108,16 +108,19 @@ public class Drawer {
 					if ((e.getX() >= 600 && e.getX() <= 965) && (e.getY() >= 70 && e.getY() <= 170)) {
 						name = JOptionPane.showInputDialog("Please input name: ");
 						menuState = false;
-						System.out.println(name);
+						System.out.println(name+"´ÔÀÌ ÀÔÀåÇÏ¼Ì½À´Ï´Ù.");
 						scoreTimer.schedule(scoreTask, scoreDelay, scorePeriod);
 						aquarium.createGuppy();
 						alienTimer.schedule(alienTask, alienDelay, alienPeriod);
 
 					}
 					if ((e.getX() >= 600 && e.getX() <= 965) && (e.getY() >= 212 && e.getY() <= 283)) {
-						String loadFilename = JOptionPane.showInputDialog("Please input file name for load: ");
-						System.out.println("Load Game");
-						menuState = false;
+						sc = new Score();
+						sc.select();
+						sc.setVisible(true);
+//						String loadFilename = JOptionPane.showInputDialog("Please input file name for load: ");
+//						System.out.println("Load Game");
+//						menuState = false;
 					}
 				} else {
 					int money = aquarium.getMoney();
@@ -205,14 +208,14 @@ public class Drawer {
 							aquarium.setMoney(money);
 							aquarium.createGuppy();
 						}
-					} else if (e.getKeyChar() == 'p') {
+					} else if (e.getKeyChar() == 'p' ||e.getKeyChar() == 'P') {
 						if (money >= PIRANHA_PRICE) {
 							money -= PIRANHA_PRICE;
 							aquarium.setMoney(money);
 							aquarium.createPiranha();
 						}
 
-					} else if (e.getKeyChar() == 'e') {
+					} else if (e.getKeyChar() == 'e' ||e.getKeyChar() == 'E') {
 						int egg = aquarium.getEgg();
 						if (money >= EGG_PRICE) {
 							egg++;
@@ -221,7 +224,7 @@ public class Drawer {
 							aquarium.setMoney(money);
 						}
 
-					} else if (e.getKeyChar() == 'x') {
+					} else if (e.getKeyChar() == 'x' || e.getKeyChar() == 'X') {
 						jalan = false;
 						finalScore=0;
 						alienTask.cancel();
@@ -262,11 +265,10 @@ public class Drawer {
 
 		drawPanel.setFocusable(true);
 		drawPanel.requestFocusInWindow();
-
 		frame.setResizable(false);
 		frame.setSize(1080, 720);
-		frame.setLocationRelativeTo(null);
 		frame.setLocationByPlatform(true);
+		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
 
 		frame.add(drawPanel);
@@ -356,7 +358,7 @@ public class Drawer {
 		}
 
 		public void loadMenu() {
-			ImageIcon temp = new ImageIcon("assets/img/mainmenu2.png");
+			ImageIcon temp = new ImageIcon("assets/img/mainmenu.png");
 			mainMenu = temp.getImage();
 		}
 

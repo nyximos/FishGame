@@ -19,7 +19,7 @@ public class Alien extends Fish {
 
 	public Alien(double time, double x, double y) {
 		super(time, x, y);
-		setSpeed(getSpeed() + 0.000007);
+		setSpeed(getSpeed() + 0.00004);
 
 	}
 
@@ -89,7 +89,7 @@ public class Alien extends Fish {
 	}
 
 	public boolean AlienisTimeToDie(int click) {
-		if (this.click >= 20) {
+		if (this.click >= 30) {
 			System.out.println("x_x");
 			return true;
 		} else {

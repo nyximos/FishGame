@@ -5,7 +5,7 @@ import java.io.Serializable;
 public final class Constants implements Serializable {
 	  public static final int COIN_BASE_VALUE = 15;
 	  public static final int FOOD_PRICE = 5;
-	  public static final int EGG_PRICE = 500;
+	  public static final int EGG_PRICE = 1000;
 	  public static final double ITEM_SPEED = 0.3;
 	  public static final double COIN_RADIUS = 30.0;
 	  public static final double FISH_SPEED = 0.8;
@@ -16,7 +16,7 @@ public final class Constants implements Serializable {
 	  public static final int GUPPY_FOOD_THRESHOLD = 3;
 	  public static final double GUPPY_COIN_INTERVAL = 5;
 	  public static final int PIRANHA_PRICE = 100;
-	  public static final double ALIEN_RADIUS = 80.0;
+	  public static final double ALIEN_RADIUS = 60.0;
 
 
 }
